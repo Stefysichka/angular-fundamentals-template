@@ -1,4 +1,5 @@
 <div class="app-button">
-  <!-- Replace the text below with your code -->
-  Button
+  <fa-icon *ngIf="iconName" [icon]="iconName" class="app-button__single-icon"></fa-icon>
+
+  {{ buttonText || 'Button' }}
 </div>
