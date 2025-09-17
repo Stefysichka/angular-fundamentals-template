@@ -1,16 +1,38 @@
-<app-header></app-header>
+<app-header>
+  <button class="header-button">Log out</button>
+  <button class="header-button">Log in</button>
+</app-header>
+
 <div class="app-root">
-  <app-search></app-search>
+  <!--<app-search></app-search>-->
 
-  <app-info></app-info>
+  <app-info
+    title="Your Cart Is Empty"
+    text="Add items to your cart to see them here."
+  >
+    <app-button buttonText="Add New Course"></app-button>
+  </app-info>
+  <app-course-info
+    *ngIf="selectedCourse"
+    [course]="selectedCourse"
+    (goBack)="onBackFromCourseInfo()"
+  >
+  </app-course-info>
+  
+  <app-courses-list
+    [courses]="courses"
+    [editable]="true"
+    (showCourse)="onShowCourse($event)"
+    (editCourse)="onEditCourse($event)"
+    (deleteCourse)="onDeleteCourse($event)"
+  >
+  </app-courses-list>
 
-  <app-course-card></app-course-card>
+  <!--<app-login-form></app-login-form>-->
 
-  <app-login-form></app-login-form>
+  <!--<app-registration-form></app-registration-form>-->
 
-  <app-registration-form></app-registration-form>
-
-  <app-course-form></app-course-form>
+  <!--<app-course-form></app-course-form>-->
 
   <!-- <app-modal [message]="'Message'" [title]="'Title'" [okButtonText]="'Ok'" [cancelButtonText]="'Cancel'"></app-modal> -->
 </div>

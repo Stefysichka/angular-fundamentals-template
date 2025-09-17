@@ -8,18 +8,18 @@
     <div class="course-card__info-text">
       <div><b>Authors: </b>{{ authors.join(', ') }}</div>
       <div><b>Duration: </b><span class="course-card__duration">{{ duration }}</span></div>
-      <div><b>Created: </b><span class="course-card__date">{{ creationDate }}</span></div>
+      <div><b>Created: </b><span class="course-card__date">{{ creationDate | date:'shortDate' }}</span></div>
     </div>
 
     <div class="course-card__info-actions">
-      <app-button text="Show course" (click)="onShow()"></app-button>
+      <app-button [buttonText]="'Show course'" (click)="onShow()"></app-button>
 
       <div class="course-card__buttons" *ngIf="editable">
-        <app-button text="Edit" (click)="onEdit()"></app-button>
-        <app-button text="Delete" (click)="onDelete()"></app-button>
+        <app-button [buttonText]="'Edit'" (click)="onEdit()"></app-button>
+        <app-button [buttonText]="'Delete'" (click)="onDelete()"></app-button>
       </div>
 
-      <ng-content></ng-content>
+      <ng-content></ng-content> 
     </div>
   </div>
 </div>
