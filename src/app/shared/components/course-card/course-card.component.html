@@ -13,12 +13,6 @@
 
     <div class="course-card__info-actions">
       <app-button [buttonText]="'Show course'" (click)="onShow()"></app-button>
-
-      <div class="course-card__buttons" *ngIf="editable">
-        <app-button [buttonText]="'Edit'" (click)="onEdit()"></app-button>
-        <app-button [buttonText]="'Delete'" (click)="onDelete()"></app-button>
-      </div>
-
       <ng-content></ng-content> 
     </div>
   </div>

@@ -10,7 +10,7 @@ export class CourseInfoComponent {
     id: string;
     title: string;
     description: string;
-    creationDate: string;
+    creationDate: Date;
     duration: number;
     authors: string[];
   };

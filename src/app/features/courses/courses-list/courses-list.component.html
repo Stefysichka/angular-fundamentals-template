@@ -6,8 +6,11 @@
     [duration]="course.duration"
     [authors]="getAuthorNames(course.authors)"
     [editable]="editable"
-    (clickOnShow)="onShow(course.id)"
-    (editCourse)="onEdit(course.id)"
-    (deleteCourse)="onDelete(course.id)">
+    (clickOnShow)="onShow(course.id)">
+
+    <div *ngIf="editable" class="course-card__buttons">
+      <app-button [iconName]="'pen'" (click)="onEdit(course.id)"></app-button>
+      <app-button [iconName]="'trash'" (click)="onDelete(course.id)"></app-button>
+    </div>
   </app-course-card>
 </div>
