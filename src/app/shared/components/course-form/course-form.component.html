@@ -103,7 +103,15 @@
                 *ngFor="let a of authors.controls; let i = index"
               >
                 {{ a.value.name }}
-                <app-button iconName="plus" (click)="addAuthor(i)" data-testid="add-author-button"></app-button>
+                <button
+                  type="button"
+                  class="icon-btn"
+                  aria-label="Add author"
+                  data-testid="add-author-button"
+                  (click)="addAuthor(i)"
+                >
+                  <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+                </button>
               </div>
             </div>
           </div>
@@ -119,10 +127,15 @@
                 *ngFor="let a of courseAuthors.controls; let i = index"
               >
                 <input type="text" [value]="a.value.name" disabled />
-                <app-button
-                  iconName="trash"
+                <button
+                  type="button"
+                  class="icon-btn danger"
+                  aria-label="Remove author"
+                  data-testid="remove-author-button"
                   (click)="removeAuthor(i)"
-                ></app-button>
+                >
+                  <fa-icon [icon]="['fas', 'trash']"></fa-icon>
+                </button>
               </div>
             </div>
           </div>
@@ -131,7 +144,10 @@
 
       <div class="form__action">
         <app-button buttonText="CANCEL"></app-button>
-        <app-button data-testid="submit-button" buttonText="CREATE COURSE"></app-button>
+        <app-button
+          data-testid="submit-button"
+          buttonText="CREATE COURSE"
+        ></app-button>
       </div>
     </div>
   </div>

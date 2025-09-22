@@ -17,7 +17,8 @@
           />
           <span
             *ngIf="
-              emailCtrl.invalid && (emailCtrl.touched || loginForm.submitted)
+              emailCtrl.invalid &&
+              (emailCtrl.touched || emailCtrl.dirty || loginForm.submitted)
             "
             class="text-danger"
             data-testid="email-error"
@@ -51,7 +52,9 @@
           <span
             *ngIf="
               passwordCtrl.invalid &&
-              (passwordCtrl.touched || loginForm.submitted)
+              (passwordCtrl.touched ||
+                passwordCtrl.dirty ||
+                loginForm.submitted)
             "
             class="text-danger"
             data-testid="password-error"
