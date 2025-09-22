@@ -16,7 +16,7 @@
         <span
           class="text-danger"
           data-testid="title-error"
-          *ngIf="(title.touched || submitted) && title.invalid"
+          *ngIf="submitted && title.invalid"
         >
           Title is required.
         </span>
@@ -32,7 +32,7 @@
         <span
           class="text-danger"
           data-testid="description-error"
-          *ngIf="(description.touched || submitted) && description.invalid"
+          *ngIf="submitted && description.invalid"
         >
           Description is required.
         </span>
@@ -56,7 +56,7 @@
         <span
           class="text-danger"
           data-testid="duration-error"
-          *ngIf="(duration.touched || submitted) && duration.invalid"
+          *ngIf="submitted && duration.invalid"
         >
           Duration is required.
         </span>
@@ -80,7 +80,7 @@
         <span
           class="text-danger"
           data-testid="author-error"
-          *ngIf="(author.touched || submitted) && author.errors"
+          *ngIf="submitted && author.errors"
         >
           <ng-container *ngIf="author.errors?.['required']">
             Author name is required.

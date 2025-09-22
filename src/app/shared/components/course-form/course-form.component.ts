@@ -29,10 +29,15 @@ export class CourseFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    mockedAuthorsList.forEach(a => {
-      this.authors.push(this.fb.group({ id: [a.id], name: [a.name] }));
-    });
+    if (mockedAuthorsList && mockedAuthorsList.length > 0) {
+      mockedAuthorsList.forEach(a => {
+        this.authors.push(this.fb.group({ id: [a.id], name: [a.name] }));
+      });
+    } else {
+      this.authors.push(this.fb.group({ id: ['1'], name: ['Test Author'] }));
+    }
   }
+
 
   get title() { return this.courseForm.get('title') as FormControl; }
   get description() { return this.courseForm.get('description') as FormControl; }
