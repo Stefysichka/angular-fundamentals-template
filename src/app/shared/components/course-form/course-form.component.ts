@@ -10,14 +10,12 @@ import { mockedAuthorsList } from '../../mocks/mocks';
   styleUrls: ['./course-form.component.scss'],
 })
 export class CourseFormComponent implements OnInit {
-  courseForm!: FormGroup;
+  courseForm: FormGroup;
   submitted = false;
 
   constructor(private fb: FormBuilder, private library: FaIconLibrary) {
     library.addIconPacks(fas);
-  }
 
-  ngOnInit(): void {
     this.courseForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(2)]],
       description: ['', [Validators.required, Validators.minLength(2)]],
@@ -28,7 +26,9 @@ export class CourseFormComponent implements OnInit {
         author: ['', [Validators.minLength(2), Validators.pattern(/^[a-zA-Z0-9\s]+$/)]],
       }),
     });
+  }
 
+  ngOnInit(): void {
     mockedAuthorsList.forEach(a => {
       this.authors.push(this.fb.group({ id: [a.id], name: [a.name] }));
     });

@@ -6,7 +6,7 @@
 <app-courses-list
   [courses]="filteredCourses"
   [editable]="editable"
-  (showCourse)="showCourse($event)"
-  (editCourse)="editCourse($event)"
-  (deleteCourse)="deleteCourse($event)">
+  (showCourse)="onShowCourse($event)"
+  (editCourse)="onEditCourse($event)"
+  (deleteCourse)="onDeleteCourse($event)">
 </app-courses-list>

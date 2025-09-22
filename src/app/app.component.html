@@ -1,6 +1,6 @@
 <app-header>
-  <app-button buttonText = "Log out"></app-button>
-  <app-button buttonText = "Log in"></app-button>
+  <app-button buttonText="Log out"></app-button>
+  <app-button buttonText="Log in"></app-button>
 </app-header>
 
 <div class="app-root">
@@ -18,9 +18,13 @@
     (goBack)="onBackFromCourseInfo()"
   >
   </app-course-info>
-  
-  <app-courses></app-courses>
 
+  <app-courses
+    (showCourse)="onShowCourse($event)"
+    (editCourse)="onEditCourse($event)"
+    (deleteCourse)="onDeleteCourse($event)"
+  >
+  </app-courses>
 
   <app-login-form></app-login-form>
 
