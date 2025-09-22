@@ -2,25 +2,21 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
   selector: '[togglePassword]',
-  exportAs: 'togglePassword'
+  exportAs: 'pwToggle'  
 })
 export class TogglePasswordDirective {
-  private _shown = false;
+  shown = false;
 
   constructor(private el: ElementRef) {
     this.setType();
   }
 
-  get shown() {
-    return this._shown;
-  }
-
   toggle() {
-    this._shown = !this._shown;
+    this.shown = !this.shown;
     this.setType();
   }
 
   private setType() {
-    this.el.nativeElement.type = this._shown ? 'text' : 'password';
+    this.el.nativeElement.type = this.shown ? 'text' : 'password';
   }
 }

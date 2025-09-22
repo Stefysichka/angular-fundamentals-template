@@ -7,16 +7,31 @@
 
       <div class="form__control">
         <label for="title">Title</label>
-        <input type="text" id="title" formControlName="title" placeholder="Input text"/>
-        <span class="text-danger" *ngIf="(title.touched || submitted) && title.invalid">
+        <input
+          type="text"
+          id="title"
+          formControlName="title"
+          placeholder="Input text"
+        />
+        <span
+          class="text-danger"
+          *ngIf="(title.touched || submitted) && title.invalid"
+        >
           Title is required.
         </span>
       </div>
 
       <div class="form__control">
         <label for="description">Description</label>
-        <textarea id="description" formControlName="description" placeholder="Input text"></textarea>
-        <span class="text-danger" *ngIf="(description.touched || submitted) && description.invalid">
+        <textarea
+          id="description"
+          formControlName="description"
+          placeholder="Input text"
+        ></textarea>
+        <span
+          class="text-danger"
+          *ngIf="(description.touched || submitted) && description.invalid"
+        >
           Description is required.
         </span>
       </div>
@@ -26,10 +41,20 @@
       <h3>Duration</h3>
       <div class="form__control">
         <div class="course__flex">
-          <input type="number" id="duration" formControlName="duration" placeholder="Input duration"/>
-          <div class="course__duration">{{ formatDuration(duration.value) }} hours</div>
+          <input
+            type="number"
+            id="duration"
+            formControlName="duration"
+            placeholder="Input duration"
+          />
+          <div class="course__duration">
+            {{ formatDuration(duration.value) }} hours
+          </div>
         </div>
-        <span class="text-danger" *ngIf="(duration.touched || submitted) && duration.invalid">
+        <span
+          class="text-danger"
+          *ngIf="(duration.touched || submitted) && duration.invalid"
+        >
           Duration is required.
         </span>
       </div>
@@ -38,12 +63,25 @@
 
       <h3>Authors</h3>
       <div class="form__control">
-        <div class="course__flex" [formControl]="newAuthor">
-          <input type="text" id="author" formControlName="author" placeholder="Input Author Name"/>
-          <app-button buttonText="CREATE AUTHOR" (click)="createAuthor()"></app-button>
+        <div class="course__flex">
+          <input
+            type="text"
+            id="author"
+            [formControl]="newAuthor"
+            placeholder="Input Author Name"
+          />
+          <app-button
+            buttonText="CREATE AUTHOR"
+            (click)="createAuthor()"
+          ></app-button>
         </div>
-        <span class="text-danger"
-              *ngIf="(newAuthor.get('author')?.touched || submitted) && newAuthor.get('author')?.invalid">
+        <span
+          class="text-danger"
+          *ngIf="
+            (newAuthor.get('author')?.touched || submitted) &&
+            newAuthor.get('author')?.invalid
+          "
+        >
           New author should contain only latin letters and numbers.
         </span>
 
@@ -51,7 +89,10 @@
           <div class="course__col">
             <div class="course__col-title">Authors List</div>
             <div formArrayName="authors">
-              <div class="course__authors-item" *ngFor="let a of authors.controls; let i = index">
+              <div
+                class="course__authors-item"
+                *ngFor="let a of authors.controls; let i = index"
+              >
                 {{ a.value.name }}
                 <app-button iconName="plus" (click)="addAuthor(i)"></app-button>
               </div>
@@ -60,11 +101,19 @@
 
           <div class="course__col">
             <div class="course__col-title">Course Authors</div>
-            <div *ngIf="courseAuthors.length === 0" class="muted">Author list is empty</div>
+            <div *ngIf="courseAuthors.length === 0" class="muted">
+              Author list is empty
+            </div>
             <div formArrayName="courseAuthors">
-              <div class="course__authors-item" *ngFor="let a of courseAuthors.controls; let i = index">
-                <input type="text" [value]="a.value.name" disabled/>
-                <app-button iconName="trash" (click)="removeAuthor(i)"></app-button>
+              <div
+                class="course__authors-item"
+                *ngFor="let a of courseAuthors.controls; let i = index"
+              >
+                <input type="text" [value]="a.value.name" disabled />
+                <app-button
+                  iconName="trash"
+                  (click)="removeAuthor(i)"
+                ></app-button>
               </div>
             </div>
           </div>

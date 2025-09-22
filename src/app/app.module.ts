@@ -12,7 +12,7 @@ import { CoursesService } from '@app/services/courses.service';
 import { CoursesModule } from './features/courses.module';
 
 @NgModule({
-  declarations: [AppComponent, CourseInfoComponent],
+  declarations: [AppComponent, CourseInfoComponent,],
   imports: [
     BrowserModule,
     SharedModule,
