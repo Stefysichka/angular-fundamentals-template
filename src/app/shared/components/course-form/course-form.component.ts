@@ -22,10 +22,12 @@ export class CourseFormComponent implements OnInit {
       duration: ['', [Validators.required, Validators.min(0)]],
       authors: this.fb.array([]),
       courseAuthors: this.fb.array([]),
-      newAuthor: this.fb.group({
-        author: ['', [Validators.minLength(2), Validators.pattern(/^[a-zA-Z0-9\s]+$/)]],
-      }),
+      newAuthor: new FormControl('', [
+        Validators.minLength(2),
+        Validators.pattern(/^[a-zA-Z0-9\s]+$/),
+      ]),
     });
+
   }
 
   ngOnInit(): void {
@@ -39,7 +41,7 @@ export class CourseFormComponent implements OnInit {
   get duration() { return this.courseForm.get('duration') as FormControl; }
   get authors() { return this.courseForm.get('authors') as FormArray; }
   get courseAuthors() { return this.courseForm.get('courseAuthors') as FormArray; }
-  get newAuthor() { return this.courseForm.get('newAuthor') as FormGroup; }
+  get newAuthor() { return this.courseForm.get('newAuthor') as FormControl; }
 
   addAuthor(index: number) {
     const a = this.authors.at(index);
@@ -54,12 +56,14 @@ export class CourseFormComponent implements OnInit {
   }
 
   createAuthor() {
-    const ctrl = this.newAuthor.get('author') as FormControl;
+    const ctrl = this.newAuthor;
     if (!ctrl.value || ctrl.invalid) return;
     const created = { id: Date.now().toString(), name: ctrl.value };
     this.authors.push(this.fb.group(created));
     ctrl.reset();
   }
+
+
 
   formatDuration(v: any): string {
     const n = Number(v) || 0;

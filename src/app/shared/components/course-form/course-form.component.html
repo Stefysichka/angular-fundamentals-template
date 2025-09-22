@@ -38,7 +38,7 @@
 
       <h3>Authors</h3>
       <div class="form__control">
-        <div class="course__flex" [formGroup]="newAuthor">
+        <div class="course__flex" [formControl]="newAuthor">
           <input type="text" id="author" formControlName="author" placeholder="Input Author Name"/>
           <app-button buttonText="CREATE AUTHOR" (click)="createAuthor()"></app-button>
         </div>
