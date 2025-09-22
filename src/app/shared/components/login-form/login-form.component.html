@@ -20,6 +20,7 @@
               emailCtrl.invalid && (emailCtrl.touched || loginForm.submitted)
             "
             class="text-danger"
+            data-testid="email-error"
           >
             <ng-container *ngIf="emailCtrl.errors?.['required']">
               Email is required.
@@ -53,6 +54,7 @@
               (passwordCtrl.touched || loginForm.submitted)
             "
             class="text-danger"
+            data-testid="password-error"
           >
             Password is required
           </span>
