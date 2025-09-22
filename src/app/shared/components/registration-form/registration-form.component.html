@@ -27,6 +27,7 @@
           </ng-container>
         </span>
       </div>
+
       <div class="form__control">
         <label for="email">Email</label>
         <input
@@ -48,30 +49,31 @@
           </ng-container>
         </span>
       </div>
-      <div class="form__control" *ngIf="true">
+
+      <div class="form__control">
         <label for="password">Password</label>
         <div class="password-wrapper">
           <input
-            type="password"
+            [type]="showPassword ? 'text' : 'password'"
             id="password"
             formControlName="password"
             placeholder="Input text"
-            togglePassword
-            #pw="togglePassword"
           />
           <fa-icon
-            [icon]="pw.shown ? eyeSlash : eye"
-            (click)="pw.toggle()"
+            [icon]="showPassword ? eyeSlash : eye"
+            (click)="togglePassword()"
             class="password-toggle"
           ></fa-icon>
         </div>
         <span
           *ngIf="f['password'].invalid && (f['password'].touched || submitted)"
           class="text-danger"
-          >Password is required.</span
         >
+          Password is required.
+        </span>
       </div>
     </div>
+
     <div class="form__action">
       <app-button
         (click)="registrationForm.valid && onSubmit()"

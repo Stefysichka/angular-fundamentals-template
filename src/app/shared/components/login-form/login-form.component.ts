@@ -8,12 +8,20 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent {
-  @ViewChild("loginForm") public loginForm!: NgForm;
+  @ViewChild('loginForm') public loginForm!: NgForm;
+
   eye = faEye;
   eyeSlash = faEyeSlash;
-  onSubmit(form: NgForm){
-    if(form.valid){
+
+  showPassword = false;
+
+  onSubmit(form: NgForm) {
+    if (form.valid) {
       console.log('Form Submitted!', form.value);
     }
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 }

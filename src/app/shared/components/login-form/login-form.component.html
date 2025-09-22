@@ -29,22 +29,21 @@
             </ng-container>
           </span>
         </div>
-        <div class="form__control" *ngIf="true">
+
+        <div class="form__control">
           <label for="password">Password</label>
           <div class="password-wrapper">
             <input
-              type="password"
+              [type]="showPassword ? 'text' : 'password'"
               id="password"
               name="password"
               ngModel
               required
-              togglePassword
-              #pw="togglePassword"
               #passwordCtrl="ngModel"
             />
             <fa-icon
-              [icon]="pw.shown ? eyeSlash : eye"
-              (click)="pw.toggle()"
+              [icon]="showPassword ? eyeSlash : eye"
+              (click)="togglePassword()"
               class="password-toggle"
             ></fa-icon>
           </div>
@@ -59,6 +58,7 @@
           </span>
         </div>
       </div>
+
       <div>
         <div class="form__action">
           <app-button

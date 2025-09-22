@@ -15,8 +15,7 @@
         />
         <span
           class="text-danger"
-          data-testid="title-error"
-          *ngIf="submitted && title.invalid"
+          *ngIf="(title.touched || submitted) && title.invalid"
         >
           Title is required.
         </span>
@@ -31,8 +30,7 @@
         ></textarea>
         <span
           class="text-danger"
-          data-testid="description-error"
-          *ngIf="submitted && description.invalid"
+          *ngIf="(description.touched || submitted) && description.invalid"
         >
           Description is required.
         </span>
@@ -55,8 +53,7 @@
         </div>
         <span
           class="text-danger"
-          data-testid="duration-error"
-          *ngIf="submitted && duration.invalid"
+          *ngIf="(duration.touched || submitted) && duration.invalid"
         >
           Duration is required.
         </span>
@@ -73,14 +70,15 @@
             formControlName="author"
             placeholder="Input Author Name"
           />
-          <button type="button" (click)="createAuthor()">
-            CREATE AUTHOR
-          </button>
+          <app-button
+            buttonText="CREATE AUTHOR"
+            (click)="createAuthor()"
+          ></app-button>
         </div>
         <span
           class="text-danger"
           data-testid="author-error"
-          *ngIf="submitted && author.errors"
+          *ngIf="(author.touched || submitted) && author.errors"
         >
           <ng-container *ngIf="author.errors?.['required']">
             Author name is required.
@@ -102,7 +100,7 @@
                 *ngFor="let a of authors.controls; let i = index"
               >
                 {{ a.value.name }}
-                <button type="button" (click)="addAuthor(i)">+</button>
+                <app-button iconName="plus" (click)="addAuthor(i)"></app-button>
               </div>
             </div>
           </div>
@@ -118,7 +116,10 @@
                 *ngFor="let a of courseAuthors.controls; let i = index"
               >
                 <input type="text" [value]="a.value.name" disabled />
-                <button type="button" (click)="removeAuthor(i)">🗑</button>
+                <app-button
+                  iconName="trash"
+                  (click)="removeAuthor(i)"
+                ></app-button>
               </div>
             </div>
           </div>
@@ -126,10 +127,8 @@
       </div>
 
       <div class="form__action">
-        <button type="button">CANCEL</button>
-        <button data-testid="submit-button" type="submit">
-          CREATE COURSE
-        </button>
+        <app-button buttonText="CANCEL"></app-button>
+        <app-button data-testid="submit-button" buttonText="CREATE COURSE"></app-button>
       </div>
     </div>
   </div>
