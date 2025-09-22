@@ -15,6 +15,7 @@
         />
         <span
           class="text-danger"
+          data-testid="title-error"
           *ngIf="(title.touched || submitted) && title.invalid"
         >
           Title is required.
@@ -30,6 +31,7 @@
         ></textarea>
         <span
           class="text-danger"
+          data-testid="description-error"
           *ngIf="(description.touched || submitted) && description.invalid"
         >
           Description is required.
@@ -53,6 +55,7 @@
         </div>
         <span
           class="text-danger"
+          data-testid="duration-error"
           *ngIf="(duration.touched || submitted) && duration.invalid"
         >
           Duration is required.
@@ -70,10 +73,9 @@
             formControlName="author"
             placeholder="Input Author Name"
           />
-          <app-button
-            buttonText="CREATE AUTHOR"
-            (click)="createAuthor()"
-          ></app-button>
+          <button type="button" (click)="createAuthor()">
+            CREATE AUTHOR
+          </button>
         </div>
         <span
           class="text-danger"
@@ -100,7 +102,7 @@
                 *ngFor="let a of authors.controls; let i = index"
               >
                 {{ a.value.name }}
-                <app-button iconName="plus" (click)="addAuthor(i)"></app-button>
+                <button type="button" (click)="addAuthor(i)">+</button>
               </div>
             </div>
           </div>
@@ -116,10 +118,7 @@
                 *ngFor="let a of courseAuthors.controls; let i = index"
               >
                 <input type="text" [value]="a.value.name" disabled />
-                <app-button
-                  iconName="trash"
-                  (click)="removeAuthor(i)"
-                ></app-button>
+                <button type="button" (click)="removeAuthor(i)">🗑</button>
               </div>
             </div>
           </div>
@@ -127,8 +126,10 @@
       </div>
 
       <div class="form__action">
-        <app-button buttonText="CANCEL"></app-button>
-        <app-button data-testid="submit-button" buttonText="CREATE COURSE"></app-button>
+        <button type="button">CANCEL</button>
+        <button data-testid="submit-button" type="submit">
+          CREATE COURSE
+        </button>
       </div>
     </div>
   </div>

@@ -1,40 +1,32 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# Dependencies
 /node_modules
 /.pnp
 .pnp.js
+package-lock.json
 
-# testing
+# Testing
 /coverage
 /e2e/*.js
 /e2e/*.map
+*.spec.js
+*.spec.js.map
 
-# production
+# Production & Build
 /dist
 /tmp
 /out-tsc
 /bazel-out
-
-# misc
-.DS_Store
-.idea/
-.env
-.env.*
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.sass-cache
-connect.lock
-libpeerconnection.log
-testem.log
-typings/
+*.js.map
+*.css.map
 
 # Angular specific
-.angular/cache/
+.angular/
+.angular/cache
 .angular/config.json
 .angular-cli.json
+.nx/
 .nx/cache
 
 # IDEs and editors
@@ -55,38 +47,40 @@ typings/
 # System Files
 .DS_Store
 Thumbs.db
+Desktop.ini
 
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
-
-# Node
-npm-debug.log
-yarn-error.log
-
-# Visual Studio Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.history/*
-
-# Miscellaneous
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
+# Logs and debugging
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+debug.log
+.sass-cache
+connect.lock
+libpeerconnection.log
 testem.log
-/typings
-*.swp
-*~
+debug.log
 
-# Local environment files
+# TypeScript
+typings/
+*.tsbuildinfo
+
+# Misc
 .env
+.env.*
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+*.swp
+*~
+.DS_Store
+
+# Project specific
+.cache/
+stats.json
+.eslintcache
+.stylelintcache
+junit.xml
+coverage/
+reports/
