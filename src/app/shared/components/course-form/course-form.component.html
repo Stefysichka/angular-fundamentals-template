@@ -67,7 +67,7 @@
           <input
             type="text"
             id="author"
-            [formControl]="newAuthor"
+            formControlName="author"
             placeholder="Input Author Name"
           />
           <app-button
@@ -77,12 +77,17 @@
         </div>
         <span
           class="text-danger"
-          *ngIf="
-            (newAuthor.get('author')?.touched || submitted) &&
-            newAuthor.get('author')?.invalid
-          "
+          *ngIf="(author.touched || submitted) && author.errors"
         >
-          New author should contain only latin letters and numbers.
+          <ng-container *ngIf="author.errors?.['required']">
+            Author name is required.
+          </ng-container>
+          <ng-container *ngIf="author.errors?.['minlength']">
+            Author name must be at least 2 characters.
+          </ng-container>
+          <ng-container *ngIf="author.errors?.['pattern']">
+            Author name should contain only latin letters and numbers.
+          </ng-container>
         </span>
 
         <div class="course__columns">

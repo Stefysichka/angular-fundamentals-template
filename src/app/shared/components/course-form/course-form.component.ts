@@ -12,6 +12,7 @@ import { mockedAuthorsList } from '../../mocks/mocks';
 export class CourseFormComponent implements OnInit {
   courseForm: FormGroup;
   submitted = false;
+  formErrors: { [key: string]: string } = {};
 
   constructor(private fb: FormBuilder, private library: FaIconLibrary) {
     library.addIconPacks(fas);
@@ -20,12 +21,9 @@ export class CourseFormComponent implements OnInit {
       title: ['', [Validators.required, Validators.minLength(2)]],
       description: ['', [Validators.required, Validators.minLength(2)]],
       duration: ['', [Validators.required, Validators.min(0)]],
+      author: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^[a-zA-Z0-9\s]+$/)]],
       authors: this.fb.array([]),
       courseAuthors: this.fb.array([]),
-      newAuthor: new FormControl('', [
-        Validators.minLength(2),
-        Validators.pattern(/^[a-zA-Z0-9\s]+$/),
-      ]),
     });
 
   }
@@ -39,28 +37,63 @@ export class CourseFormComponent implements OnInit {
   get title() { return this.courseForm.get('title') as FormControl; }
   get description() { return this.courseForm.get('description') as FormControl; }
   get duration() { return this.courseForm.get('duration') as FormControl; }
+  get author() { return this.courseForm.get('author') as FormControl; }
   get authors() { return this.courseForm.get('authors') as FormArray; }
   get courseAuthors() { return this.courseForm.get('courseAuthors') as FormArray; }
-  get newAuthor() { return this.courseForm.get('newAuthor') as FormControl; }
 
   addAuthor(index: number) {
-    const a = this.authors.at(index);
-    this.courseAuthors.push(a);
-    this.authors.removeAt(index);
+    const authorGroup = this.authors.at(index);
+    if (authorGroup) {
+      const author = { ...authorGroup.value };
+      this.courseAuthors.push(this.fb.group(author));
+      this.authors.removeAt(index);
+    }
   }
 
   removeAuthor(index: number) {
-    const a = this.courseAuthors.at(index);
-    this.authors.push(a);
-    this.courseAuthors.removeAt(index);
+    const authorGroup = this.courseAuthors.at(index);
+    if (authorGroup) {
+      const author = { ...authorGroup.value };
+      this.authors.push(this.fb.group(author));
+      this.courseAuthors.removeAt(index);
+    }
+  }
+
+  isValidAuthorName(name: string): boolean {
+    return /^[a-zA-Z0-9\s]+$/.test(name);
   }
 
   createAuthor() {
-    const ctrl = this.newAuthor;
-    if (!ctrl.value || ctrl.invalid) return;
-    const created = { id: Date.now().toString(), name: ctrl.value };
+    const authorControl = this.author;
+    if (!authorControl.value || authorControl.invalid) {
+      authorControl.markAsTouched();
+      this.formErrors['author'] = 'Author name is invalid';
+      return;
+    }
+    const created = { id: Date.now().toString(), name: authorControl.value };
     this.authors.push(this.fb.group(created));
-    ctrl.reset();
+    authorControl.reset();
+    this.formErrors['author'] = '';
+  }
+
+  validateForm() {
+    Object.keys(this.courseForm.controls).forEach(key => {
+      const control = this.courseForm.get(key);
+      if (control && control.invalid && (control.dirty || control.touched || this.submitted)) {
+        if (control.errors?.['required']) {
+          this.formErrors[key] = `${key} is required`;
+        } else if (control.errors?.['minlength']) {
+          const minLength = control.errors['minlength'];
+          this.formErrors[key] = `${key} must be at least ${minLength.requiredLength} characters`;
+        } else if (control.errors?.['pattern']) {
+          if (key === 'author') {
+            this.formErrors[key] = 'Author name should contain only latin letters and numbers';
+          } else {
+            this.formErrors[key] = `${key} contains invalid characters`;
+          }
+        }
+      }
+    });
   }
 
 
@@ -74,10 +107,13 @@ export class CourseFormComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    this.validateForm();
+    
     if (!this.courseForm.valid) {
       this.courseForm.markAllAsTouched();
       return;
     }
+
     const payload = {
       title: this.title.value,
       description: this.description.value,

@@ -2,7 +2,7 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
   selector: '[togglePassword]',
-  exportAs: 'pwToggle'  
+  exportAs: 'pwToggle'
 })
 export class TogglePasswordDirective {
   shown = false;

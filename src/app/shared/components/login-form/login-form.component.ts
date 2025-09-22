@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-login-form',
@@ -8,6 +9,8 @@ import { NgForm } from '@angular/forms';
 })
 export class LoginFormComponent {
   @ViewChild("loginForm") public loginForm!: NgForm;
+  eye = faEye;
+  eyeSlash = faEyeSlash;
   onSubmit(form: NgForm){
     if(form.valid){
       console.log('Form Submitted!', form.value);

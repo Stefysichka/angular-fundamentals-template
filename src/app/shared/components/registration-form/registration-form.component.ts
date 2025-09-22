@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-registration-form',
@@ -9,6 +10,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class RegistrationFormComponent implements OnInit{
   registrationForm!: FormGroup;
   submitted = false;
+  eye = faEye;
+  eyeSlash = faEyeSlash;
 
   constructor(private fb: FormBuilder){}
 
