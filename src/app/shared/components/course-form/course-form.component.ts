@@ -77,6 +77,7 @@ export class CourseFormComponent implements OnInit {
   }
 
   validateForm() {
+    this.formErrors = {};
     Object.keys(this.courseForm.controls).forEach(key => {
       const control = this.courseForm.get(key);
       if (control && control.invalid && (control.dirty || control.touched || this.submitted)) {

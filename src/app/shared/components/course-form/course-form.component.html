@@ -15,7 +15,6 @@
         />
         <span
           class="text-danger"
-          data-testid="title-error"
           *ngIf="(title.touched || submitted) && title.invalid"
         >
           Title is required.
@@ -31,7 +30,6 @@
         ></textarea>
         <span
           class="text-danger"
-          data-testid="description-error"
           *ngIf="(description.touched || submitted) && description.invalid"
         >
           Description is required.
@@ -55,7 +53,6 @@
         </div>
         <span
           class="text-danger"
-          data-testid="duration-error"
           *ngIf="(duration.touched || submitted) && duration.invalid"
         >
           Duration is required.
@@ -103,7 +100,7 @@
                 *ngFor="let a of authors.controls; let i = index"
               >
                 {{ a.value.name }}
-                <app-button data-testid="add-author" iconName="plus" (click)="addAuthor(i)"></app-button>
+                <app-button iconName="plus" (click)="addAuthor(i)"></app-button>
               </div>
             </div>
           </div>
