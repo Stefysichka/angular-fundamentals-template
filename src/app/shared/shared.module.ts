@@ -54,8 +54,11 @@ const pipes = [
   ],
   exports: [
     ...components,
-    ...directives,
+    EmailValidatorDirective,
+    TogglePasswordDirective,
     ...pipes,
+    FormsModule,
+    FontAwesomeModule
   ]
 })
 export class SharedModule { }
