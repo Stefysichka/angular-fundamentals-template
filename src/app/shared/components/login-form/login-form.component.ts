@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-login-form',
@@ -10,9 +9,6 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 export class LoginFormComponent {
   @ViewChild('loginForm') public loginForm!: NgForm;
 
-  eye = faEye;
-  eyeSlash = faEyeSlash;
-
   showPassword = false;
 
   onSubmit(form: NgForm) {
@@ -21,7 +17,4 @@ export class LoginFormComponent {
     }
   }
 
-  togglePassword() {
-    this.showPassword = !this.showPassword;
-  }
 }

@@ -10,8 +10,6 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 export class RegistrationFormComponent implements OnInit {
   registrationForm!: FormGroup;
   submitted = false;
-  eye = faEye;
-  eyeSlash = faEyeSlash;
 
   showPassword = false;
 
@@ -20,7 +18,7 @@ export class RegistrationFormComponent implements OnInit {
   ngOnInit(): void {
     this.registrationForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(6)]],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
@@ -34,9 +32,5 @@ export class RegistrationFormComponent implements OnInit {
 
   get f() {
     return this.registrationForm.controls;
-  }
-
-  togglePassword() {
-    this.showPassword = !this.showPassword;
   }
 }

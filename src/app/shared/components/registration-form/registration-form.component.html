@@ -18,7 +18,6 @@
         <span
           *ngIf="f['name'].invalid && (f['name'].touched || submitted)"
           class="text-danger"
-          data-testid="name-error"
         >
           <ng-container *ngIf="f['name'].errors?.['required']">
             Name is required.
@@ -41,7 +40,6 @@
         <span
           *ngIf="f['email'].invalid && (f['email'].touched || submitted)"
           class="text-danger"
-          data-testid="email-error"
         >
           <ng-container *ngIf="f['email'].errors?.['required']">
             Email is required.
@@ -61,16 +59,10 @@
             formControlName="password"
             placeholder="Input text"
           />
-          <fa-icon
-            [icon]="showPassword ? eyeSlash : eye"
-            (click)="togglePassword()"
-            class="password-toggle"
-          ></fa-icon>
         </div>
         <span
           *ngIf="f['password'].invalid && (f['password'].touched || submitted)"
           class="text-danger"
-          data-testid="password-error"
         >
           <ng-container *ngIf="f['password'].errors?.['required']">
             Password is required.
@@ -83,11 +75,7 @@
     </div>
 
     <div class="form__action">
-      <app-button
-        type="submit"
-        [buttonText]="'REGISTER'"
-        [class.disabled]="registrationForm.invalid"
-      ></app-button>
+      <button type = "submit" [disabled] = "registrationForm.invalid">REGISTER</button>
     </div>
 
     <div class="form__text">

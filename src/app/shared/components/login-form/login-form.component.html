@@ -21,7 +21,6 @@
               (emailCtrl.touched || emailCtrl.dirty || loginForm.submitted)
             "
             class="text-danger"
-            data-testid="email-error"
           >
             <ng-container *ngIf="emailCtrl.errors?.['required']">
               Email is required.
@@ -43,11 +42,6 @@
               required
               #passwordCtrl="ngModel"
             />
-            <fa-icon
-              [icon]="showPassword ? eyeSlash : eye"
-              (click)="togglePassword()"
-              class="password-toggle"
-            ></fa-icon>
           </div>
           <span
             *ngIf="
@@ -57,7 +51,6 @@
                 loginForm.submitted)
             "
             class="text-danger"
-            data-testid="password-error"
           >
             Password is required
           </span>
@@ -66,11 +59,7 @@
 
       <div>
         <div class="form__action">
-          <app-button
-            (click)="loginForm.ngSubmit.emit()"
-            [buttonText]="'LOGIN'"
-            [class.disabled]="loginForm.invalid"
-          ></app-button>
+          <button type = "submit" [disabled] = "loginForm.invalid">LOGIN</button>
         </div>
         <div class="form__text">
           If you have an account you may
