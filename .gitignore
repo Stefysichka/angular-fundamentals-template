@@ -1,34 +1,86 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# Dependencies
 /node_modules
 /.pnp
 .pnp.js
+package-lock.json
 
-# testing
+# Testing
 /coverage
+/e2e/*.js
+/e2e/*.map
+*.spec.js
+*.spec.js.map
 
-# production
+# Production & Build
 /dist
 /tmp
 /out-tsc
+/bazel-out
+*.js.map
+*.css.map
 
-# misc
-.DS_Store
+# Angular specific
+.angular/
+.angular/cache
+.angular/config.json
+.angular-cli.json
+.nx/
+.nx/cache
+
+# IDEs and editors
 .idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# System Files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs and debugging
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+debug.log
+.sass-cache
+connect.lock
+libpeerconnection.log
+testem.log
+debug.log
 
-# local env
+# TypeScript
+typings/
+*.tsbuildinfo
+
+# Misc
+.env
+.env.*
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+*.swp
+*~
+.DS_Store
 
-# Angular cache
-.angular/cache
-.angular/config.json
-
-# VS Code
-.vscode/
+# Project specific
+.cache/
+stats.json
+.eslintcache
+.stylelintcache
+junit.xml
+coverage/
+reports/

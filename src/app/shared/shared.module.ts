@@ -27,14 +27,22 @@ const components = [
   LoginFormComponent,
   RegistrationFormComponent,
   CourseFormComponent,
+];
+
+const directives = [
+  EmailValidatorDirective
+];
+
+const pipes = [
   DurationPipe,
   CustomDatePipe,
-  EmailValidatorDirective
 ];
 
 @NgModule({
   declarations: [
-    ...components
+    ...components,
+    ...directives,
+    ...pipes,
   ],
   imports: [
     CommonModule,
@@ -43,7 +51,9 @@ const components = [
     ReactiveFormsModule,
   ],
   exports: [
-    ...components
+    ...components,
+    ...directives,
+    ...pipes,
   ]
 })
 export class SharedModule { }

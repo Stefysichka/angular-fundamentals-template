@@ -1,6 +1,6 @@
 <app-header>
-  <app-button buttonText = "Log out"></app-button>
-  <app-button buttonText = "Log in"></app-button>
+  <app-button buttonText="Log out"></app-button>
+  <app-button buttonText="Log in"></app-button>
 </app-header>
 
 <div class="app-root">
@@ -18,21 +18,19 @@
     (goBack)="onBackFromCourseInfo()"
   >
   </app-course-info>
-  
-  <app-courses-list
-    [courses]="courses"
-    [editable]="true"
+
+  <app-courses
     (showCourse)="onShowCourse($event)"
     (editCourse)="onEditCourse($event)"
     (deleteCourse)="onDeleteCourse($event)"
   >
-  </app-courses-list>
+  </app-courses>
 
-  <!--<app-login-form></app-login-form>-->
+  <app-login-form></app-login-form>
 
-  <!--<app-registration-form></app-registration-form>-->
+  <app-registration-form></app-registration-form>
 
-  <!--<app-course-form></app-course-form>-->
+  <app-course-form></app-course-form>
 
   <!-- <app-modal [message]="'Message'" [title]="'Title'" [okButtonText]="'Ok'" [cancelButtonText]="'Cancel'"></app-modal> -->
 </div>
