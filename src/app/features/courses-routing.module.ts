@@ -9,25 +9,21 @@ import { AdminGuard } from '@app/user/guards/admin.guard';
 const routes: Routes = [
   {
     path: '',
-    component: CoursesComponent,
-    canLoad: [AuthorizedGuard]
+    component: CoursesComponent
   },
   {
     path: 'add',
     component: CourseFormComponent,
-    canLoad: [AuthorizedGuard],
     canActivate: [AdminGuard]   
   },
   {
     path: 'edit/:id',
     component: CourseFormComponent,
-    canLoad: [AuthorizedGuard],
     canActivate: [AdminGuard]  
   },
   {
     path: ':id',
-    component: CoursesComponent,
-    canLoad: [AuthorizedGuard]
+    component: CoursesComponent
   },
 ];
 

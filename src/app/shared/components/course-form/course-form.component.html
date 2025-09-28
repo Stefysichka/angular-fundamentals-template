@@ -146,8 +146,9 @@
         <app-button buttonText="CANCEL"></app-button>
         <app-button
           data-testid="submit-button"
-          buttonText="CREATE COURSE"
-        ></app-button>
+          [buttonText]="isEdit ? 'UPDATE COURSE' : 'CREATE COURSE'"
+        >
+        </app-button>
       </div>
     </div>
   </div>

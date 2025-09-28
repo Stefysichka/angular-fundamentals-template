@@ -12,11 +12,11 @@ export class LoginFormComponent {
   @ViewChild('loginForm') public loginForm!: NgForm;
 
   showPassword = false;
-  errorMsg: string | null = null;   // ✅ додано
+  errorMsg: string | null = null;   
 
   constructor(
-    private auth: AuthService,       // ✅ додано
-    private router: Router           // ✅ додано
+    private auth: AuthService,       
+    private router: Router           
   ) {}
 
   onSubmit(form: NgForm) {
@@ -27,7 +27,7 @@ export class LoginFormComponent {
         next: () => {
           this.router.navigate(['/courses']);
         },
-        error: (err: any) => {       // ✅ явно типізували
+        error: (err: any) => {       
           this.errorMsg = err?.error?.errors?.[0] ?? 'Login failed';
         }
       });

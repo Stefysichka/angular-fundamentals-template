@@ -49,12 +49,16 @@ export class CourseFormComponent implements OnInit {
           description: course.description,
           duration: course.duration
         });
-        
+
         course.authors.forEach(authorId => {
           this.courseAuthors.push(this.fb.group({ id: [authorId], name: [''] }));
         });
       });
     }
+    this.coursesService.getAllAuthors().subscribe(authors => {
+      authors.forEach(a => this.authors.push(this.fb.group(a)));
+    });
+
   }
 
   get title() { return this.courseForm.get('title') as FormControl; }
@@ -93,11 +97,13 @@ export class CourseFormComponent implements OnInit {
       this.formErrors['author'] = 'Author name is invalid';
       return;
     }
-    const created = { id: Date.now().toString(), name: authorControl.value };
-    this.authors.push(this.fb.group(created));
-    authorControl.reset();
-    this.formErrors['author'] = '';
+    this.coursesService.createAuthor(authorControl.value).subscribe(author => {
+      this.authors.push(this.fb.group(author));
+      authorControl.reset();
+      this.formErrors['author'] = '';
+    });
   }
+
 
   validateForm() {
     this.formErrors = {};
@@ -132,7 +138,7 @@ export class CourseFormComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     this.validateForm();
-    
+
     if (!this.courseForm.valid) {
       this.courseForm.markAllAsTouched();
       return;

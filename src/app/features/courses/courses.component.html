@@ -15,6 +15,7 @@
 <app-courses-list
   [courses]="filteredCourses"
   [editable]="editable"
+  [authorMap]="authorMap"
   (showCourse)="onShowCourse($event)"
   (editCourse)="onEditCourse($event)"
   (deleteCourse)="onDeleteCourse($event)">

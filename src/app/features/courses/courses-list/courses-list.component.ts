@@ -10,13 +10,14 @@ import { Course } from '../../../services/courses.service';
 export class CoursesListComponent {
   @Input() courses: Course[] = [];
   @Input() editable: boolean = false;
+  @Input() authorMap: Record<string, string> = {};
 
   @Output() showCourse = new EventEmitter<string>();
   @Output() editCourse = new EventEmitter<string>();
   @Output() deleteCourse = new EventEmitter<string>();
 
   getAuthorNames(ids: string[]): string[] {
-    return ids; 
+    return ids.map(id => this.authorMap[id] ?? id); 
   }
 
   onShow(id: string) {

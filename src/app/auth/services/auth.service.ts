@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { SessionStorageService } from './session-storage.service';
 
-const API_URL = 'http://localhost:4000';
+const API_URL = 'http://localhost:4000/api';
 
 interface LoginResponse {
     successful: boolean;

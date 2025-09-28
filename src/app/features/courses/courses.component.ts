@@ -14,6 +14,8 @@ export class CoursesComponent implements OnInit {
   editable = false; 
   selectedId: string | null = null;
 
+  authorMap: Record<string, string> = {};
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -26,18 +28,27 @@ export class CoursesComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(p => this.selectedId = p.get('id'));
     this.loadCourses();
+
+    this.coursesService.getAllAuthors().subscribe(authors => {
+      this.authorMap = Object.fromEntries(authors.map(a => [a.id, a.name]));
+    });
   }
 
   private loadCourses(searchText?: string) {
-    this.coursesService.getAll().subscribe(courses => {
-      this.courses = courses;
-      this.filteredCourses = courses;
-    });
-  }
-  
-  onSearch(query: string) {
-    this.loadCourses(query);
-  }
+  const obs = searchText
+    ? this.coursesService.filterCourses(searchText)
+    : this.coursesService.getAll();
+
+  obs.subscribe(courses => {
+    this.courses = courses;
+    this.filteredCourses = courses;
+  });
+}
+
+onSearch(query: string) {
+  this.loadCourses(query);
+}
+
 
   onShowCourse(id: string) { this.router.navigate(['/courses', id]); }
   onEditCourse(id: string) { this.router.navigate(['/courses', 'edit', id]); }
@@ -49,6 +60,10 @@ export class CoursesComponent implements OnInit {
   }
 
   onAddCourse() {
-    this.router.navigate(['/courses/new']);
+    this.router.navigate(['/courses/add']);
   }
+  onCancel(): void {
+  this.router.navigate(['/courses']);
+}
+
 }
