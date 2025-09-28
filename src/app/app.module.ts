@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './auth/interceptors/token.interceptor';
 import { HttpClientModule } from '@angular/common/http';
+import { windowProvider } from './window.provider';
 
 @NgModule({
   declarations: [AppComponent, CourseInfoComponent,],
@@ -22,7 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     HttpClientModule,
   ],
-  providers: [AuthorizedGuard, NotAuthorizedGuard, CoursesService, CoursesStoreService, {provide: Window, useValue: window}, {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}],
+  providers: [AuthorizedGuard, NotAuthorizedGuard, CoursesService, CoursesStoreService, {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}, windowProvider],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
