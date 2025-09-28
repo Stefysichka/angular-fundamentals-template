@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-const API_URL = 'http://localhost:4000/api';
+const API_URL = 'http://localhost:4000';
 
 export interface Author {
   id: string;

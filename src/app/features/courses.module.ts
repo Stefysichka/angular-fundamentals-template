@@ -6,7 +6,7 @@ import {CoursesRoutingModule} from "./courses-routing.module";
 import { CoursesComponent } from './courses/courses.component';
 import { CoursesListComponent } from './courses/courses-list/courses-list.component';
 import { SharedModule } from '../shared/shared.module';
-
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,6 +18,7 @@ import { SharedModule } from '../shared/shared.module';
     FormsModule,
     SharedModule,
     CoursesRoutingModule,
+    HttpClientModule
   ],
   exports: [
     CoursesComponent,
