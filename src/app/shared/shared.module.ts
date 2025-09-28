@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 
 import { ModalComponent } from './components/modal/modal.component';
 import {
@@ -53,11 +52,9 @@ const pipes = [
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,         
   ],
   exports: [
-    RouterModule,
-    HttpClientModule,          
+    RouterModule, 
     ...components,
     ...directives,
     ...pipes,

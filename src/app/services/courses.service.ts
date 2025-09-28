@@ -63,10 +63,8 @@ export class CoursesService {
   }
 
   filterCourses(text: string): Observable<Course[]> {
-    const params = new HttpParams().set('title', text);
     return this.http.get<{ successful: boolean; result: Course[] }>(
-      `${API_URL}/courses/filter`,
-      { params }
+      `${API_URL}/courses/filter?title=${encodeURIComponent(text)}`
     ).pipe(map(res => res.result));
   }
 
