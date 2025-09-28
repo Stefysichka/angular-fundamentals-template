@@ -8,7 +8,10 @@ import { NotAuthorizedGuard } from '@app/auth/guards/not-authorized.guard';
 import { AuthorizedGuard } from '@app/auth/guards/authorized.guard';
 import { CoursesStoreService } from '@app/services/courses-store.service';
 import { CoursesService } from '@app/services/courses.service';
-import { CoursesModule } from './features/courses.module';
+import { AppRoutingModule } from './app-routing.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './auth/interceptors/token.interceptor';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, CourseInfoComponent,],
@@ -16,9 +19,10 @@ import { CoursesModule } from './features/courses.module';
     BrowserModule,
     SharedModule,
     FontAwesomeModule,
-    CoursesModule, 
+    AppRoutingModule,
+    HttpClientModule,
   ],
-  providers: [AuthorizedGuard, NotAuthorizedGuard, CoursesService, CoursesStoreService],
+  providers: [AuthorizedGuard, NotAuthorizedGuard, CoursesService, CoursesStoreService, {provide: Window, useValue: window}, {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

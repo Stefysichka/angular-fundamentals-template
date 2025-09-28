@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { mockedCoursesList } from './shared/mocks/mocks';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,8 @@ export class AppComponent {
   courses = mockedCoursesList; 
   selectedCourse: any = null;
 
+  constructor(private router: Router) {}
+  
   onShowCourse(id: string) {
     this.selectedCourse = this.courses.find(c => c.id === id) || null;
     console.log('Show course', this.selectedCourse);

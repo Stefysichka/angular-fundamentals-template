@@ -1,14 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { mockedAuthorsList } from '../../../shared/mocks/mocks';
+import { Course } from '../../../services/courses.service';
 
-export interface Course {
-  id: string;
-  title: string;
-  description: string;
-  creationDate: Date;
-  duration: number;
-  authors: string[];
-}
 
 @Component({
   selector: 'app-courses-list',
@@ -24,9 +16,7 @@ export class CoursesListComponent {
   @Output() deleteCourse = new EventEmitter<string>();
 
   getAuthorNames(ids: string[]): string[] {
-    return mockedAuthorsList
-      .filter(author => ids.includes(author.id))
-      .map(author => author.name);
+    return ids; 
   }
 
   onShow(id: string) {
@@ -35,6 +25,10 @@ export class CoursesListComponent {
 
   onEdit(id: string) {
     this.editCourse.emit(id);
+  }
+
+  getDate(date: string | Date): Date {
+    return date instanceof Date ? date : new Date(date);
   }
 
   onDelete(id: string) {

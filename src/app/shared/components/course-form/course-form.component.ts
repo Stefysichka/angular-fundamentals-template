@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import { mockedAuthorsList } from '../../mocks/mocks';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CoursesService, Course } from '../../../services/courses.service';
 
 @Component({
   selector: 'app-course-form',
@@ -14,7 +15,13 @@ export class CourseFormComponent implements OnInit {
   submitted = false;
   formErrors: { [key: string]: string } = {};
 
-  constructor(private fb: FormBuilder, private library: FaIconLibrary) {
+  constructor(
+    private fb: FormBuilder,
+    private library: FaIconLibrary,
+    private route: ActivatedRoute,
+    private router: Router,
+    private coursesService: CoursesService
+  ) {
     library.addIconPacks(fas);
 
     this.courseForm = this.fb.group({
@@ -27,11 +34,27 @@ export class CourseFormComponent implements OnInit {
     });
 
   }
+  isEdit = false;
+  editingId: string | null = null;
 
   ngOnInit(): void {
-    mockedAuthorsList.forEach(a => {
-      this.authors.push(this.fb.group({ id: [a.id], name: [a.name] }));
-    });
+    const id = this.route.snapshot.paramMap.get('id');
+    this.isEdit = !!id;
+    this.editingId = id;
+
+    if (id) {
+      this.coursesService.getCourse(id).subscribe(course => {
+        this.courseForm.patchValue({
+          title: course.title,
+          description: course.description,
+          duration: course.duration
+        });
+        
+        course.authors.forEach(authorId => {
+          this.courseAuthors.push(this.fb.group({ id: [authorId], name: [''] }));
+        });
+      });
+    }
   }
 
   get title() { return this.courseForm.get('title') as FormControl; }
@@ -121,6 +144,15 @@ export class CourseFormComponent implements OnInit {
       duration: Number(this.duration.value) || 0,
       authors: this.courseAuthors.value.map((x: any) => x.id),
     };
-    console.log(payload);
+
+    if (this.isEdit && this.editingId) {
+      this.coursesService.editCourse(this.editingId, payload).subscribe(() => {
+        this.router.navigate(['/courses']);
+      });
+    } else {
+      this.coursesService.createCourse(payload).subscribe(() => {
+        this.router.navigate(['/courses']);
+      });
+    }
   }
 }

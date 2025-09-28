@@ -1,42 +1,54 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { mockedCoursesList } from '../../shared/mocks/mocks';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Course, CoursesService } from '../../services/courses.service';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.css']
 })
-export class CoursesComponent {
-  courses = mockedCoursesList;
-  filteredCourses = mockedCoursesList;
-  editable = true;
+export class CoursesComponent implements OnInit {
+  courses: Course[] = [];
+  filteredCourses: Course[] = [];
+  editable = false; 
+  selectedId: string | null = null;
 
-  @Output() showCourse = new EventEmitter<string>();
-  @Output() editCourse = new EventEmitter<string>();
-  @Output() deleteCourse = new EventEmitter<string>();
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private coursesService: CoursesService,
+    private authService: AuthService
+  ) {
+    this.authService.isAdmin$.subscribe(isAdmin => this.editable = isAdmin);
+  }
 
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(p => this.selectedId = p.get('id'));
+    this.loadCourses();
+  }
+
+  private loadCourses(searchText?: string) {
+    this.coursesService.getAll().subscribe(courses => {
+      this.courses = courses;
+      this.filteredCourses = courses;
+    });
+  }
+  
   onSearch(query: string) {
-    if (!query) {
-      this.filteredCourses = this.courses;
-      return;
-    }
-    this.filteredCourses = this.courses.filter(c =>
-      c.title.toLowerCase().includes(query.toLowerCase()) ||
-      c.description.toLowerCase().includes(query.toLowerCase())
-    );
+    this.loadCourses(query);
   }
 
-  onShowCourse(id: string) {
-    this.showCourse.emit(id);
-  }
-
-  onEditCourse(id: string) {
-    this.editCourse.emit(id);
-  }
-
+  onShowCourse(id: string) { this.router.navigate(['/courses', id]); }
+  onEditCourse(id: string) { this.router.navigate(['/courses', 'edit', id]); }
   onDeleteCourse(id: string) {
-    this.deleteCourse.emit(id);
-    this.courses = this.courses.filter(c => c.id !== id);
-    this.filteredCourses = this.filteredCourses.filter(c => c.id !== id);
+    this.coursesService.deleteCourse(id).subscribe(() => {
+      this.loadCourses();
+      if (this.selectedId === id) this.router.navigate(['/courses']);
+    });
+  }
+
+  onAddCourse() {
+    this.router.navigate(['/courses/new']);
   }
 }

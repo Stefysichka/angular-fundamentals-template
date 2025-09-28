@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ModalComponent } from './components/modal/modal.component';
 import {
@@ -46,11 +47,13 @@ const pipes = [
   ],
   imports: [
     CommonModule,
+    RouterModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
   ],
   exports: [
+    RouterModule,
     ...components,
     ...directives,
     ...pipes,

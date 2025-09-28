@@ -2,7 +2,7 @@
   <app-course-card
     [title]="course.title"
     [description]="course.description"
-    [creationDate]="course.creationDate"
+    [creationDate]="getDate(course.creationDate)"
     [duration]="course.duration"
     [authors]="getAuthorNames(course.authors)"
     [editable]="editable"

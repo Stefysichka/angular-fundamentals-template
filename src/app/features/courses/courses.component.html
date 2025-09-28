@@ -1,7 +1,16 @@
-<app-search
-  [placeholder]="'Search courses...'"
-  (search)="onSearch($event)">
-</app-search>
+<div class="courses-header">
+  <app-search
+    [placeholder]="'Search courses...'"
+    (search)="onSearch($event)">
+  </app-search>
+
+  <app-button
+    *ngIf="editable"
+    [buttonText]="'Add Course'"
+    (click)="onAddCourse()"
+    [iconName]="'plus'">
+  </app-button>
+</div>
 
 <app-courses-list
   [courses]="filteredCourses"
