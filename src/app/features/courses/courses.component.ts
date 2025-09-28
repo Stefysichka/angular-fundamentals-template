@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Course, CoursesService } from '../../services/courses.service';
 import { AuthService } from '../../auth/services/auth.service';
@@ -17,7 +17,7 @@ export class CoursesComponent implements OnInit {
   authorMap: Record<string, string> = {};
 
   constructor(
-    private route: ActivatedRoute,
+    @Optional() private route: ActivatedRoute,
     private router: Router,
     private coursesService: CoursesService,
     private authService: AuthService
@@ -26,7 +26,10 @@ export class CoursesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(p => this.selectedId = p.get('id'));
+   
+    if (this.route) {
+      this.route.paramMap.subscribe(p => this.selectedId = p.get('id'));
+    }
     this.loadCourses();
 
     this.coursesService.getAllAuthors().subscribe(authors => {
@@ -35,20 +38,19 @@ export class CoursesComponent implements OnInit {
   }
 
   private loadCourses(searchText?: string) {
-  const obs = searchText
-    ? this.coursesService.filterCourses(searchText)
-    : this.coursesService.getAll();
+    const obs = searchText
+      ? this.coursesService.filterCourses(searchText)
+      : this.coursesService.getAll();
 
-  obs.subscribe(courses => {
-    this.courses = courses;
-    this.filteredCourses = courses;
-  });
-}
+    obs.subscribe(courses => {
+      this.courses = courses;
+      this.filteredCourses = courses;
+    });
+  }
 
-onSearch(query: string) {
-  this.loadCourses(query);
-}
-
+  onSearch(query: string) {
+    this.loadCourses(query);
+  }
 
   onShowCourse(id: string) { this.router.navigate(['/courses', id]); }
   onEditCourse(id: string) { this.router.navigate(['/courses', 'edit', id]); }
@@ -62,8 +64,8 @@ onSearch(query: string) {
   onAddCourse() {
     this.router.navigate(['/courses/add']);
   }
-  onCancel(): void {
-  this.router.navigate(['/courses']);
-}
 
+  onCancel(): void {
+    this.router.navigate(['/courses']);
+  }
 }
