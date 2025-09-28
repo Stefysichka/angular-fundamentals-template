@@ -16,7 +16,7 @@ export interface Course {
   description: string;
   creationDate: string | Date;
   duration: number;
-  authors: string[]; 
+  authors: string[];
 }
 
 export interface CreateCourseDto {
@@ -30,7 +30,7 @@ export interface CreateCourseDto {
   providedIn: 'root'
 })
 export class CoursesService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAll(): Observable<Course[]> {
     return this.http.get<{ successful: boolean; result: Course[] }>(
@@ -63,9 +63,10 @@ export class CoursesService {
   }
 
   filterCourses(text: string): Observable<Course[]> {
+    const params = new HttpParams().set('title', text);
     return this.http.get<{ successful: boolean; result: Course[] }>(
       `${API_URL}/courses/filter`,
-      { params: { title: text } }
+      { params }
     ).pipe(map(res => res.result));
   }
 
