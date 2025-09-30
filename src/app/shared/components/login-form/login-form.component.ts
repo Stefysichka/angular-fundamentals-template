@@ -12,25 +12,28 @@ export class LoginFormComponent {
   @ViewChild('loginForm') public loginForm!: NgForm;
 
   showPassword = false;
-  errorMsg: string | null = null;   
+  errorMsg: string | null = null;
 
   constructor(
-    private auth: AuthService,       
-    private router: Router           
-  ) {}
+    private auth: AuthService,
+    private router: Router
+  ) { }
 
   onSubmit(form: NgForm) {
     if (form.valid) {
-      const { email, password } = form.value;
+      const { name, email, password } = form.value;
 
-      this.auth.login({ email, password }).subscribe({
+      this.auth.login({ name, email, password }).subscribe({
         next: () => {
-          this.router.navigate(['/courses']);
+          if (this.auth.isAuthorized) {
+            this.router.navigateByUrl('/courses');
+          }
         },
-        error: (err: any) => {       
+        error: (err: any) => {
           this.errorMsg = err?.error?.errors?.[0] ?? 'Login failed';
         }
       });
+
     }
   }
 }

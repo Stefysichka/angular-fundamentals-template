@@ -39,8 +39,12 @@ export class AuthService {
         this.isAuthorized$$.next(!!this.sessionStorage.getToken());
     }
 
-    login(user: { email: string; password: string }): Observable<void> {
-        return this.http.post<LoginResponse>(`${API_URL}/login`, user).pipe(
+    login(user: { name?: string; email: string; password: string }): Observable<void> {
+        return this.http.post<LoginResponse>(`${API_URL}/login`, {
+            name: user.name ?? '',
+            email: user.email,
+            password: user.password
+        }).pipe(
             tap(res => {
                 if (res.successful && res.result) {
                     this.sessionStorage.setToken(res.result);
@@ -51,6 +55,7 @@ export class AuthService {
             map(() => void 0)
         );
     }
+
 
     logout(): Observable<void> {
         return this.http.delete(`${API_URL}/logout`).pipe(

@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
+import { AuthService } from '@app/auth/services/auth.service';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { EmailValidatorDirective } from '@shared/directives/email.directive';
+
+export function emailValidatorFn(control: AbstractControl): ValidationErrors | null {
+  return new EmailValidatorDirective().validate(control);
+}
 
 @Component({
   selector: 'app-registration-form',
@@ -12,13 +19,14 @@ export class RegistrationFormComponent implements OnInit {
   submitted = false;
 
   showPassword = false;
+  errorMsg: string | null = null;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.registrationForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(6)]],
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, emailValidatorFn]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
@@ -26,7 +34,14 @@ export class RegistrationFormComponent implements OnInit {
   onSubmit(): void {
     this.submitted = true;
     if (this.registrationForm.valid) {
-      console.log(this.registrationForm.value);
+      this.auth.register(this.registrationForm.value).subscribe({
+        next: () => {
+          this.router.navigate(['/login']);
+        },
+        error: (err) => {
+          this.errorMsg = err?.error?.errors?.[0] ?? 'Registration failed';
+        },
+      });
     }
   }
 
