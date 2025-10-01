@@ -15,8 +15,8 @@ import { AuthRoutingModule } from './auth-routing.module';
     AuthRoutingModule
   ],
   providers: [
-    SessionStorageService,
-    AuthService,
+    //SessionStorageService,
+    //AuthService,
   ]
 })
 export class AuthModule { }

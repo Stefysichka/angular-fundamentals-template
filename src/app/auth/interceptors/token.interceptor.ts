@@ -19,16 +19,16 @@ export class TokenInterceptor implements HttpInterceptor {
     private sessionStorage: SessionStorageService,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.sessionStorage.getToken();
 
     let cloned = req;
-    if (token) {
+    if (token && token.trim().length > 0) {
       cloned = req.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}` 
+          Authorization: `Bearer ${token}`
         }
       });
     }
@@ -36,11 +36,14 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(cloned).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          this.authService.logout();
+          console.error('401 from:', req.url);
+          this.authService.clearSession();
           this.router.navigate(['/login']);
         }
+
         return throwError(() => error);
       })
     );
+
   }
 }

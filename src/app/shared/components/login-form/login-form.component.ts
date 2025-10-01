@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '@app/auth/services/auth.service';
 import { Router } from '@angular/router';
+import { UserStoreService } from '@app/user/services/user-store.service'; 
 
 @Component({
   selector: 'app-login-form',
@@ -16,24 +17,23 @@ export class LoginFormComponent {
 
   constructor(
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private userStore: UserStoreService 
   ) { }
 
   onSubmit(form: NgForm) {
     if (form.valid) {
-      const { name, email, password } = form.value;
+      const {  email, password } = form.value;
 
-      this.auth.login({ name, email, password }).subscribe({
+      this.auth.login({  email, password }).subscribe({
         next: () => {
-          if (this.auth.isAuthorized) {
-            this.router.navigateByUrl('/courses');
-          }
+          this.userStore.getUser();
+          this.router.navigateByUrl('/courses');
         },
         error: (err: any) => {
           this.errorMsg = err?.error?.errors?.[0] ?? 'Login failed';
         }
       });
-
     }
   }
 }

@@ -16,11 +16,12 @@ export interface User {
   providedIn: 'root'
 })
 export class UserService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getUser(): Observable<User> {
     return this.http.get<{ successful: boolean; result: User }>(
-      `${API_URL}/users/me`
+      `${API_URL}/users/me`,
+      { headers: { 'Cache-Control': 'no-cache' } }
     ).pipe(map(res => res.result));
   }
 }

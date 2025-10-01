@@ -39,17 +39,22 @@ export class AuthService {
         this.isAuthorized$$.next(!!this.sessionStorage.getToken());
     }
 
-    login(user: { name?: string; email: string; password: string }): Observable<void> {
+    login(user: { email: string; password: string }): Observable<void> {
         return this.http.post<LoginResponse>(`${API_URL}/login`, {
-            name: user.name ?? '',
             email: user.email,
             password: user.password
         }).pipe(
             tap(res => {
                 if (res.successful && res.result) {
-                    this.sessionStorage.setToken(res.result);
+                    const rawToken = res.result.startsWith('Bearer ')
+                        ? res.result.replace('Bearer ', '')
+                        : res.result;
+
+                    this.sessionStorage.setToken(rawToken);
+                    
                     this.isAuthorized$$.next(true);
-                    this.isAdmin$$.next(res.user.role === 'admin');
+                } else {
+                    this.clearSession();
                 }
             }),
             map(() => void 0)
@@ -57,16 +62,20 @@ export class AuthService {
     }
 
 
+
     logout(): Observable<void> {
         return this.http.delete(`${API_URL}/logout`).pipe(
-            tap(() => {
-                this.sessionStorage.deleteToken();
-                this.isAuthorized$$.next(false);
-                this.isAdmin$$.next(false);
-            }),
+            tap(() => this.clearSession()),
             map(() => void 0)
         );
     }
+
+    clearSession(): void {
+        this.sessionStorage.deleteToken();
+        this.isAuthorized$$.next(false);
+        this.isAdmin$$.next(false);
+    }
+
 
     register(user: RegisterRequest): Observable<any> {
         return this.http.post(`${API_URL}/register`, user);
@@ -75,4 +84,5 @@ export class AuthService {
     get isAuthorized(): boolean {
         return this.isAuthorized$$.getValue();
     }
+
 }
