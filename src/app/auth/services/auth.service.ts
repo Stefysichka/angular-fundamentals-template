@@ -73,7 +73,6 @@ export class AuthService {
     clearSession(): void {
         this.sessionStorage.deleteToken();
         this.isAuthorized$$.next(false);
-        this.isAdmin$$.next(false);
     }
 
 

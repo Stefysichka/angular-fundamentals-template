@@ -135,6 +135,11 @@ export class CourseFormComponent implements OnInit {
     return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
   }
 
+  onCancel() {
+    this.router.navigate(['/courses']);
+  }
+
+
   onSubmit() {
     this.submitted = true;
     this.validateForm();

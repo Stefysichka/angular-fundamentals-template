@@ -1,7 +1,7 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Course, CoursesService } from '../../services/courses.service';
-import { AuthService } from '../../auth/services/auth.service';
+import { UserStoreService } from '../../user/services/user-store.service';
 
 @Component({
   selector: 'app-courses',
@@ -20,9 +20,9 @@ export class CoursesComponent implements OnInit {
     @Optional() private route: ActivatedRoute,
     private router: Router,
     private coursesService: CoursesService,
-    private authService: AuthService
+    private userStore: UserStoreService,
   ) {
-    this.authService.isAdmin$.subscribe(isAdmin => this.editable = isAdmin);
+    this.userStore.isAdmin$.subscribe(isAdmin => this.editable = isAdmin);
   }
 
   ngOnInit(): void {
