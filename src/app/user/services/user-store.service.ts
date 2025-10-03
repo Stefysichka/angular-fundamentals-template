@@ -35,7 +35,7 @@ export class UserStoreService {
     return this.isAdmin$$.value;
   }
 
-  set isAdmin(value: boolean) {
-    this.isAdmin$$.next(value);
-  }
+  //set isAdmin(value: boolean) {
+  //  this.isAdmin$$.next(value);
+  //}
 }

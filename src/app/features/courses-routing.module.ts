@@ -24,11 +24,6 @@ const routes: Routes = [
     canLoad: [AuthorizedGuard],
     canActivate: [AdminGuard]  
   },
-  {
-    path: ':id',
-    component: CoursesComponent,
-    canLoad: [AuthorizedGuard]
-  },
 ];
 
 @NgModule({

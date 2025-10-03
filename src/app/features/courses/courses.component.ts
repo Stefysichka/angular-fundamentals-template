@@ -11,8 +11,8 @@ import { AuthService } from '../../auth/services/auth.service';
 export class CoursesComponent implements OnInit {
   courses: Course[] = [];
   filteredCourses: Course[] = [];
-  editable = false; 
-  selectedId: string | null = null;
+  editable = false;
+  selectedCourse?: Course;
 
   authorMap: Record<string, string> = {};
 
@@ -26,10 +26,7 @@ export class CoursesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   
-    if (this.route) {
-      this.route.paramMap.subscribe(p => this.selectedId = p.get('id'));
-    }
+
     this.loadCourses();
 
     this.coursesService.getAllAuthors().subscribe(authors => {
@@ -52,12 +49,19 @@ export class CoursesComponent implements OnInit {
     this.loadCourses(query);
   }
 
-  onShowCourse(id: string) { this.router.navigate(['/courses', id]); }
+  onShowCourse(id: string) {
+    this.coursesService.getCourse(id).subscribe(course => {
+      this.selectedCourse = course;
+    });
+  }
+
   onEditCourse(id: string) { this.router.navigate(['/courses', 'edit', id]); }
   onDeleteCourse(id: string) {
     this.coursesService.deleteCourse(id).subscribe(() => {
       this.loadCourses();
-      if (this.selectedId === id) this.router.navigate(['/courses']);
+      if (this.selectedCourse?.id === id) {
+        this.selectedCourse = undefined;
+      }
     });
   }
 
@@ -68,4 +72,9 @@ export class CoursesComponent implements OnInit {
   onCancel(): void {
     this.router.navigate(['/courses']);
   }
+
+  onBack() {
+    this.selectedCourse = undefined;
+  }
+
 }
