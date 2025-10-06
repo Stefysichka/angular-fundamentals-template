@@ -13,7 +13,7 @@
   </div>
 
   <app-courses-list
-    [courses]="filteredCourses"
+    [courses]="(courses$ | async) ?? []"
     [editable]="editable"
     [authorMap]="authorMap"
     (showCourse)="onShowCourse($event)"
