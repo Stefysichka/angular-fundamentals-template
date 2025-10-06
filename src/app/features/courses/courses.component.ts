@@ -2,6 +2,7 @@ import { Component, OnInit, Optional } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Course, CoursesService } from '../../services/courses.service';
 import { UserStoreService } from '../../user/services/user-store.service';
+import { CoursesStateFacade } from '@app/store/courses/courses.facade';
 
 @Component({
   selector: 'app-courses',
@@ -9,8 +10,7 @@ import { UserStoreService } from '../../user/services/user-store.service';
   styleUrls: ['./courses.component.css']
 })
 export class CoursesComponent implements OnInit {
-  courses: Course[] = [];
-  filteredCourses: Course[] = [];
+  courses$ = this.coursesFacade.allCourses$;
   editable = false;
   selectedCourse?: Course;
 
@@ -20,49 +20,40 @@ export class CoursesComponent implements OnInit {
     @Optional() private route: ActivatedRoute,
     private router: Router,
     private coursesService: CoursesService,
+    private coursesFacade: CoursesStateFacade,
     private userStore: UserStoreService,
   ) {
     this.userStore.isAdmin$.subscribe(isAdmin => this.editable = isAdmin);
   }
 
   ngOnInit(): void {
-
-    this.loadCourses();
-
+    this.coursesFacade.getAllCourses();
     this.coursesService.getAllAuthors().subscribe(authors => {
       this.authorMap = Object.fromEntries(authors.map(a => [a.id, a.name]));
     });
   }
 
-  private loadCourses(searchText?: string) {
-    const obs = searchText
-      ? this.coursesService.filterCourses(searchText)
-      : this.coursesService.getAll();
-
-    obs.subscribe(courses => {
-      this.courses = courses;
-      this.filteredCourses = courses;
-    });
-  }
-
   onSearch(query: string) {
-    this.loadCourses(query);
+    if (query.trim()) {
+      this.coursesFacade.getFilteredCourses(query);
+    } else {
+      this.coursesFacade.getAllCourses();
+    }
   }
 
   onShowCourse(id: string) {
-    this.coursesService.getCourse(id).subscribe(course => {
-      this.selectedCourse = course;
+    this.coursesFacade.getSingleCourse(id);
+    this.coursesFacade.course$.subscribe(course => {
+      this.selectedCourse = course || undefined;
     });
   }
 
-  onEditCourse(id: string) { this.router.navigate(['/courses', 'edit', id]); }
+  onEditCourse(id: string) {
+    this.router.navigate(['/courses', 'edit', id]);
+  }
+
   onDeleteCourse(id: string) {
-    this.coursesService.deleteCourse(id).subscribe(() => {
-      this.loadCourses();
-      if (this.selectedCourse?.id === id) {
-        this.selectedCourse = undefined;
-      }
-    });
+    this.coursesFacade.deleteCourse(id);
   }
 
   onAddCourse() {
@@ -76,5 +67,4 @@ export class CoursesComponent implements OnInit {
   onBack() {
     this.selectedCourse = undefined;
   }
-
 }

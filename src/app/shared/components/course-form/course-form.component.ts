@@ -3,7 +3,8 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CoursesService, Course } from '../../../services/courses.service';
+import { Course, CoursesService } from '../../../services/courses.service';
+import { CoursesStateFacade } from '@app/store/courses/courses.facade';
 
 @Component({
   selector: 'app-course-form',
@@ -14,13 +15,16 @@ export class CourseFormComponent implements OnInit {
   courseForm: FormGroup;
   submitted = false;
   formErrors: { [key: string]: string } = {};
+  isEdit = false;
+  editingId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private library: FaIconLibrary,
     private route: ActivatedRoute,
     private router: Router,
-    private coursesService: CoursesService
+    private coursesService: CoursesService,
+    private coursesFacade: CoursesStateFacade
   ) {
     library.addIconPacks(fas);
 
@@ -32,10 +36,7 @@ export class CourseFormComponent implements OnInit {
       authors: this.fb.array([]),
       courseAuthors: this.fb.array([]),
     });
-
   }
-  isEdit = false;
-  editingId: string | null = null;
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -43,22 +44,25 @@ export class CourseFormComponent implements OnInit {
     this.editingId = id;
 
     if (id) {
-      this.coursesService.getCourse(id).subscribe(course => {
-        this.courseForm.patchValue({
-          title: course.title,
-          description: course.description,
-          duration: course.duration
-        });
-
-        course.authors.forEach(authorId => {
-          this.courseAuthors.push(this.fb.group({ id: [authorId], name: [''] }));
-        });
+      this.coursesFacade.getSingleCourse(id);
+      this.coursesFacade.course$.subscribe((course: Course | null) => {
+        if (course) {
+          this.courseForm.patchValue({
+            title: course.title,
+            description: course.description,
+            duration: course.duration,
+          });
+          this.courseAuthors.clear();
+          course.authors.forEach(authorId => {
+            this.courseAuthors.push(this.fb.group({ id: [authorId], name: [''] }));
+          });
+        }
       });
     }
+
     this.coursesService.getAllAuthors().subscribe(authors => {
       authors.forEach(a => this.authors.push(this.fb.group(a)));
     });
-
   }
 
   get title() { return this.courseForm.get('title') as FormControl; }
@@ -86,10 +90,6 @@ export class CourseFormComponent implements OnInit {
     }
   }
 
-  isValidAuthorName(name: string): boolean {
-    return /^[a-zA-Z0-9\s]+$/.test(name);
-  }
-
   createAuthor() {
     const authorControl = this.author;
     if (!authorControl.value || authorControl.invalid) {
@@ -104,30 +104,6 @@ export class CourseFormComponent implements OnInit {
     });
   }
 
-
-  validateForm() {
-    this.formErrors = {};
-    Object.keys(this.courseForm.controls).forEach(key => {
-      const control = this.courseForm.get(key);
-      if (control && control.invalid && (control.dirty || control.touched || this.submitted)) {
-        if (control.errors?.['required']) {
-          this.formErrors[key] = `${key} is required`;
-        } else if (control.errors?.['minlength']) {
-          const minLength = control.errors['minlength'];
-          this.formErrors[key] = `${key} must be at least ${minLength.requiredLength} characters`;
-        } else if (control.errors?.['pattern']) {
-          if (key === 'author') {
-            this.formErrors[key] = 'Author name should contain only latin letters and numbers';
-          } else {
-            this.formErrors[key] = `${key} contains invalid characters`;
-          }
-        }
-      }
-    });
-  }
-
-
-
   formatDuration(v: any): string {
     const n = Number(v) || 0;
     const h = Math.floor(n / 60);
@@ -135,35 +111,33 @@ export class CourseFormComponent implements OnInit {
     return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
   }
 
-  onCancel() {
-    this.router.navigate(['/courses']);
-  }
-
-
   onSubmit() {
     this.submitted = true;
-    this.validateForm();
 
     if (!this.courseForm.valid) {
       this.courseForm.markAllAsTouched();
       return;
     }
 
-    const payload = {
+    const payload: Course = {
+      id: this.editingId ?? '',
       title: this.title.value,
       description: this.description.value,
       duration: Number(this.duration.value) || 0,
       authors: this.courseAuthors.value.map((x: any) => x.id),
+      creationDate: new Date(),
     };
 
     if (this.isEdit && this.editingId) {
-      this.coursesService.editCourse(this.editingId, payload).subscribe(() => {
-        this.router.navigate(['/courses']);
-      });
+      this.coursesFacade.editCourse(payload, this.editingId);
     } else {
-      this.coursesService.createCourse(payload).subscribe(() => {
-        this.router.navigate(['/courses']);
-      });
+      this.coursesFacade.createCourse(payload);
     }
+
+    this.router.navigate(['/courses']);
+  }
+
+  onCancel() {
+    this.router.navigate(['/courses']);
   }
 }
